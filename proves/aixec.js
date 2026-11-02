@@ -16,7 +16,7 @@ function navega(w, wx, seg, rumb=90, sheet=.85, tack=1){
     mx=Math.max(mx,Math.abs(S.roll));
     if(S.capsized>0) return {bolca:true,t:i/60,graus:99};
   }
-  return {bolca:false,graus:Math.abs(S.roll)*R2D,mx:mx*R2D,signe:Math.sign(S.roll)};
+  return {bolca:false,graus:Math.abs(S.roll)*R2D,mx:mx*R2D,signe:Math.sign(S.roll),kn:S.speed*6};
 }
 const llindar=(wx,kg=72)=>{ S.crewKg=kg; let r=99; for(let w=3;w<=30;w+=.5){ const e=navega(w,wx,12); if(e.bolca||e.graus>3){ r=w; break; } } S.crewKg=72; return r; };
 
@@ -31,5 +31,6 @@ cal(ll[0]<ll[1] && ll[1]<ll[2] && ll[2]<ll[3] && ll[3]-ll[0]>=5, 'la posició de
 { const e=navega(20,-.86,20); console.log(`  barlovent amb 20 kn: ${e.bolca?'bolca':e.graus.toFixed(0)+'°'}`); cal(!e.bolca && e.graus>15 && e.graus<40,'es pot navegar amb el buc alçat'); }
 { const a=navega(20,-.86,15,90,.85,1), b=navega(20,-.86,15,90,.85,-1); console.log(`  amures: ${(a.graus*a.signe).toFixed(1)}° i ${(b.graus*b.signe).toFixed(1)}°`); cal(Math.abs(a.graus-b.graus)<.1 && a.signe===-b.signe,'simètric a les dues amures'); }
 { let bo=true; for(const w of [4,12,26]) for(const [,wx] of POS) for(const r of [30,90,170]){ const e=navega(w,wx,6,r,.5); if(e.graus!==e.graus) bo=false; } cal(bo,'cap NaN'); }
+{ const pla=navega(12,-1,40), alt=navega(12,-.86,40), poc=navega(8,-.86,40); console.log(`  12 kn a través: pla ${pla.kn.toFixed(1)} kn · buc alçat ${alt.kn.toFixed(1)} kn · 8 kn pla ${poc.kn.toFixed(1)} kn`); cal(pla.graus===0 && alt.graus>4 && alt.kn-pla.kn>.5 && alt.kn-pla.kn<1,'el buc fora de l\'aigua frega menys: guanya de 0,5 a 1 kn'); cal(poc.graus===0 && Math.abs(poc.kn-4.5)<.1,'amb els dos bucs a l\'aigua, la velocitat no canvia'); }
 console.log('\n'+(ok?'═══ BUC ALÇAT ✔ ═══':'✗ BUC ALÇAT HA CANVIAT'));
 process.exit(ok?0:1);

@@ -137,7 +137,7 @@ Coeficients **calibrats contra temps de maniobra reals**. No hi ha modes: una so
 
 **Comportaments que cal preservar** (els mesura `proves/fisica.js`):
 
-- Virada: vela a l'altra banda i 30° de vent als 6,2 s; recupera 1,5 kn **a l'amura nova** als 9,8 s. (Abans es deia 7,4 s i 15 s: la recepta de la prova no sortia de la virada i tornava a l'amura inicial. La física és la mateixa.)
+- Virada: vela a l'altra banda i 30° de vent als 6,2 s; recupera 1,5 kn **a l'amura nova** als 9,7 s (9,8 s abans de la reducció de fregament). (Abans es deia 7,4 s i 15 s: la recepta de la prova no sortia de la virada i tornava a l'amura inicial. La física és la mateixa.)
 - Trasluixada: 8,7 s.
 - Gir navegant a 6 kn: 10 °/s.
 - Gir aturat amb el pes a popa: 11,5 °/s sostinguts (**mai més de 13**).
@@ -183,6 +183,7 @@ vent (creix amb el quadrat del vent) lluita contra el pes del buc i del patró. 
 - **`ESC.mesBuc` = 85 kg**, no els 62 de `BOAT_KG`: amb 62, un patró de 100 kg penjat alçava
   el buc de sotavent sense vent. El pes real del buc i la superfície vèlica estan per confirmar.
 - La bolcada ja no depèn de `S.heel`: passa als 60° de `S.roll`.
+- **`ESC.fregament` = 20% (en prova).** El buc fora de l'aigua (`bucFora`, sencer als 4°) treu aquesta part del fregament: a través, 12 kn, de 5,6 a 6,3 kn. Un sol buc amb tot el pes té ~21% menys de superfície mullada, no un 50%. No toca llindars ni bolcades, perquè `aixecaBuc` no llegeix la velocitat. L'empenta no baixa amb l'escora: un cop alçat, totes les posicions van igual.
 - A les zenitals, `escoraZenital()` deforma el patí sencer: el buc de l'aigua no es mou i el de barlovent s'hi acosta i puja de pantalla. L'alçada s'exagera un 30% (`ESC.guanyZenital`), una exageració declarada com `RIG.escorcZen`. L'ombra (`ombraBucs()`) es dibuixa a part perquè es quedi a l'aigua: aquest buit és el que fa llegir l'alçada.
 
 ---
