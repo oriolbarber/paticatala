@@ -3,7 +3,7 @@
 // (cara interior o exterior) o obencs. Es recorre tota la coberta, no un cas.
 const carrega = require('./_entorn.js');
 const A = carrega(), {S,F,L,RIG} = A;
-const {MANS,agafada,maEscota,patroZen,aparell,ABAST,updateWeight,physics} = A;
+const {MANS,agafada,maEscota,patroZen,aparell,ABAST,updateWeight,physics,crewY,penjat} = A;
 let fall = 0;
 const ok = (b,t) => { if(!b) fall++; console.log(`  ${b?'✔':'✗'} ${t}`); return b; };
 const cm = x => x/L*560;
@@ -40,11 +40,11 @@ for(let wx=-1;wx<=1.001;wx+=0.1) for(let wf=-1;wf<=1.001;wf+=0.1){
   if(!g){ nul++; continue; }
   compte[post+' → '+g]=(compte[post+' → '+g]||0)+1;
   // abast des de l'espatlla de la vista de perspectiva
-  const U=L*0.29, bx=wx*(L*0.15+L*0.042*0.35), by=L/2*0.14-wf*L/2*0.46, H=ap0.HULLH;
+  const U=L*0.29, bx=wx*(L*0.15+L*0.042*0.35), by=crewY(wf), H=ap0.HULLH;
   const sgn=Math.sign(wx||1), TOR=U*0.40, LEG=U*0.46, e=-MANS.k*U*0.135*0.8;
   const sh = post==='dret' ? [bx+e,by+U*0.04,H+LEG+TOR]
            : post==='peus' ? [bx+e,by-U*0.04,H+U*0.12+TOR*0.9]
-           : post==='fora' ? [sgn*(L*0.15-L*0.042*0.1)+sgn*TOR*0.92,by+e,H+U*0.26]
+           : post==='fora' ? [sgn*(L*0.15-L*0.042*0.1+penjat()*L*0.055)+sgn*TOR*0.92,by+e,H+U*0.26]
            : [bx+e,by+U*0.06,H+U*0.10+TOR*0.8];
   const d=Math.hypot(sh[0]-m[0],sh[1]-m[1],sh[2]-m[2])-ABAST;
   if(d>0){ passa++; pitjor=Math.max(pitjor,d); }
@@ -62,6 +62,11 @@ ok(pitjor<L*0.02, `la mà arriba a l'agafada: ${passa} posicions justes, com a m
 for(const p of ['assegut','dret','fora']) ok(Object.keys(compte).some(k=>k.startsWith(p)), `la prova ha vist la postura «${p}»`);
 posa(0, 0.9, 0.05);
 ok(F.posture==='peus' && tipus(MANS.suport)==='obenc', `posició neutra (peus a l'aigua): la mà va a l'obenc`);
+console.log('\nRECORREGUT DEL COS\n');
+ok(Math.abs(crewY(-1)/L-0.37) < 0.001, `a popa arriba a ${(crewY(-1)/L).toFixed(3)} eslores (abans 0,300)`);
+ok(crewY(-1) < ap0.barraY(1), 'els malucs es queden davant la barra de popa');
+ok(Math.abs(crewY(-1e-9)-crewY(1e-9)) < 1e-3, 'el recorregut és continu al centre');
+posa(-1,0); ok(penjat()===1 && F.posture==='fora', 'amb el pes a tota la banda es penja del tot');
 console.log('\nZENITAL: L\'ESCOTA ACABA A LA MÀ\n');
 for(const [wx,wf] of [[-0.7,0],[0.7,0],[-0.1,0],[-0.5,0.7],[-1,0],[0.05,0.8]]){
   posa(wx,wf);

@@ -14,19 +14,22 @@ del patí (`bx` través · `by` proa-popa · `z` alçada sobre la flotació).
 
 | magnitud (fraccions d'eslora) | làmina | codi |
 |---|---|---|
-| estació del pal, des del centre | −0,312 | −0,312 |
+| estació del pal, des del centre | −0,312 | −0,275 ‡ |
 | alçada del pal sobre la coberta | 1,186 | 1,190 |
 | caiguda del cap cap a popa | 0,219 (11,5°) | 0,232 (11,0°) |
 | alçada del puny d'amura | 0,115 | 0,115 |
 | alçada del puny d'escota | 0,246 | 0,246 |
 | pujament (amura → escota) | 0,581 | 0,620 \* |
 | barra escotera: potes | 0,452 | 0,450 |
-| barra escotera: avanç al centre | 0,086 | 0,015 † |
-| barra escotera: alçada de l'arc | 0,123 | 0,021 † |
+| barra escotera: recula al centre | 0,086 (avanç) | 0,028 † |
+| barra escotera: alçada de l'arc | 0,123 | 0,020 † |
 | barra escotera: mitja amplada | — | 0,155 |
 
 \* El pujament es queda a 0,620 perquè és el valor **calibrat** de la física
 (vegeu més avall). La diferència són 22 cm: no es nota.
+
+‡ L'Oriol situa el peu del pal al punt mig de la bancada 1, que és on el tenia la
+física (`sailGeoLimit`). Les mordasses mouen el cap: el peu és el pivot i no es mou.
 
 † L'arc de la barra surt de la **foto** de la barra real, no de la làmina: la
 fletxa és d'un 8% de la llum. Amb els valors de la làmina feia un pont del 45%.
@@ -43,8 +46,9 @@ fletxa és d'un 8% de la llum. Amb els valors de la làmina feia un pont del 45%
   zenital l'alçada es projecta cap amunt de la pantalla (2,5D); amb l'alçada
   real la vela tapava mitja coberta i la vista deixava de servir per governar.
   L'escorç està declarat i documentat, no amagat en una constant de dibuix.
-- **La barra escotera és un arc suau.** Al centre puja 0,021 eslores i avança
-  0,015 (14 cm de fletxa en 1,74 m de llum). La biestabilitat de la politja la
+- **La barra escotera és un arc suau i es corba ENFORA.** Al centre puja 0,020
+  eslores i recula 0,028 (19 cm de fletxa en 1,74 m de llum). L'Oriol ho va veure
+  invertit al mòbil: la làmina la feia avançar i ningú en va mirar el sentit. La biestabilitat de la politja la
   dona la física (`BAR_ARCH`), que no depèn d'aquest dibuix.
 - **La politja surt dels mateixos punts que la barra.** `aparell()` dona
   `barraX/Y/Z` i `carroU()`, i les tres vistes en depenen. A les zenitals la
@@ -83,6 +87,11 @@ fletxa és d'un 8% de la llum. Amb els valors de la làmina feia un pont del 45%
   regala interior (assegut al buc), regala exterior (penjat), obenc (dret i neutra).
   L'escota la porta l'espatlla de dins del patí. A les zenitals el cos va pla, i
   per això l'obenc s'agafa més avall: sobre l'obenc que es veu i a l'abast del braç.
+
+- **Recorregut del patró.** Cap a popa els malucs arriben a 0,37 eslores, a la
+  bancada de popa (abans 0,30), i penjat surten fins a 0,20, fora de la regala
+  (abans 0,165 a les zenitals i 0,146 en perspectiva). Només canvia el dibuix: la
+  física treballa amb `wf` i `wx` de -1 a 1 i ja comptava el patró penjat a 1,50 m.
 
 ## El que NO s'ha tocat: la física
 

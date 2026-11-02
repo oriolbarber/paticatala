@@ -50,7 +50,12 @@ const casos = await pg.evaluate(() => {
     const A=barra[0], B=barra[barra.length-1], M=barra[(barra.length-1)/2];
     const llum=Math.hypot(B[0]-A[0],B[1]-A[1]);
     const fletxa=Math.hypot(M[0]-(A[0]+B[0])/2, M[1]-(A[1]+B[1])/2);
-    fora.push({mode,rumb,heel,u:i/4,d,fr:fletxa/llum});
+    // ¿cap on es corba? Producte amb l'eix del patí a pantalla (popa = + en y local)
+    const m0=cx2d.getTransform(); const c=Math.cos(S.heading), s=Math.sin(S.heading);
+    const popa=[-s*(mode==='persp'?0:1), c*(mode==='persp'?0:1)];
+    const ca=[M[0]-(A[0]+B[0])/2, M[1]-(A[1]+B[1])/2];
+    const ang=cam.rot, px=Math.cos(ang)*popa[0]-Math.sin(ang)*popa[1], py=Math.sin(ang)*popa[0]+Math.cos(ang)*popa[1];
+    fora.push({mode,rumb,heel,u:i/4,d,fr:fletxa/llum,enfora:(ca[0]*px+ca[1]*py)/llum});
   }
   for(const k in orig) P[k]=orig[k];
   return fora;
@@ -68,8 +73,10 @@ for(const m of ['persp','popa','nord']){
 }
 for(const m of ['popa','nord']){
   const fr = Math.max(...casos.filter(c=>c.mode===m).map(c=>c.fr))*100;
-  ok(fr < 11, `${m.padEnd(5)} · la barra és suau com a la foto (fletxa ${fr.toFixed(0)}% de la llum)`);
+  ok(fr < 15, `${m.padEnd(5)} · la barra és suau com a la foto (fletxa ${fr.toFixed(0)}% de la llum)`);
 }
+{ const e = Math.min(...casos.filter(c=>c.mode==='popa').map(c=>c.enfora))*100;
+  ok(e > 2, `popa  · la barra es corba ENFORA, cap a popa (${e.toFixed(1)}% de la llum)`); }
 if(errors) fall += errors;
 console.log(fall ? `\n═══ ${fall} FALLADES ✗ ═══\n` : '\n═══ POLITJA GUIADA ✔ ═══\n');
 process.exit(fall?1:0);

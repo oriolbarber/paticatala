@@ -95,9 +95,9 @@ for(const cas of [{rumb:0,escota:0.1,pul:-1}, {rumb:135,escota:1,pul:1},
   for(const [v,nom] of VISTES){
     const p = pinta(v, cas);
     const noms = p.map(e=>e.n);
-    ok(comenca(noms, noms.length) && noms.length>=3,
+    ok(comenca(noms, noms.length) && noms.length===4,
        `${nom} · rumb ${cas.rumb}° escota ${cas.escota} politja ${cas.pul}`
-       + (noms.length<4 ? '  (el patró queda rere la vela: sense tram de mà)' : ''));
+       );
   }
 }
 

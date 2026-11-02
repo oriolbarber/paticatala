@@ -11,7 +11,7 @@ global.location={search:'',href:'file:///pati_vela_mobil.html'};
 global.history={length:1,back:()=>{}};
 module.exports = function carrega(extra){
   let src=require("fs").readFileSync("simM.js","utf8").replace(/^'use strict';/,"");
-  src+="\n;globalThis.__api={physics,updateWeight,S,F,CH,cam,resetToBeach,renderWorld,updateCamera,shoreFn,normA,D2R,R2D,L,RIG,aparell,calatRel,MANS,agafada,maEscota,patroZen,actualitzaMans,ABAST};\n";
+  src+="\n;globalThis.__api={physics,updateWeight,S,F,CH,cam,resetToBeach,renderWorld,updateCamera,shoreFn,normA,D2R,R2D,L,RIG,aparell,calatRel,MANS,agafada,maEscota,patroZen,actualitzaMans,ABAST,crewY,penjat};\n";
   (0,eval)(src);
   return globalThis.__api;
 };

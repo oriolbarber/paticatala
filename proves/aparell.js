@@ -47,15 +47,15 @@ console.log('    magnitud                        làmina    codi');
 S.rake=0; S.boomDir=0; S.heel=0;
 const ap = A.aparell();
 const files = [
-  ["estació del pal (des del centre)", -0.312, prop(ap.peuPal[1])],
+  ["estació del pal (bancada 1)",      -0.275, prop(ap.peuPal[1])],
   ["alçada del pal sobre la coberta",   1.186, prop(ap.capPal[2]-ap.HULLH)],
   ["caiguda del cap cap a popa",        0.219, prop(ap.capPal[1]-ap.peuPal[1])],
   ["alçada del puny d'amura",           0.115, prop(ap.amura[2]-ap.HULLH)],
   ["alçada del puny d'escota",          0.246, prop(ap.escota[2]-ap.HULLH)],
   ["pujament (amura → escota)",         0.581, prop(Math.hypot(ap.escota[0]-ap.amura[0], ap.escota[1]-ap.amura[1]))],
   ["barra escotera: potes",             0.452, prop(ap.barraY(1))],
-  ["barra escotera: avanç al centre",   0.015, prop(ap.barraY(1)-ap.barraY(0))],
-  ["barra escotera: alçada de l'arc",   0.021, prop(ap.barraZ(0)-ap.barraZ(1))],
+  ["barra escotera: recula al centre",  0.028, prop(ap.barraY(0)-ap.barraY(1))],
+  ["barra escotera: alçada de l'arc",   0.020, prop(ap.barraZ(0)-ap.barraZ(1))],
 ];
 for(const [nom, plan, codi] of files){
   const d = Math.abs(plan-codi);
@@ -73,6 +73,13 @@ ok(A.calatRel(0)===0, "la proa surt de l'aigua");
 ok(A.calatRel(1)<0.8 && A.calatRel(1)>0.3, 'la popa torna a pujar, però menys que la proa');
 let creix=true; for(let i=1;i<5;i++) if(r[i][1] <= r[i-1][1]) creix=false;
 ok(creix, 'el calat creix de proa cap a la panxa');
+
+// el peu és el pivot: les mordasses només mouen el cap del pal
+{ const peus=[-1,-0.5,0,0.5,1].map(r=>{ S.rake=r; return A.aparell().peuPal[1]; }); S.rake=0;
+  ok(peus.every(y=>y===peus[0]), 'el peu del pal no es mou amb les mordasses');
+  ok(Math.abs(peus[0]-ap.bancY(0))<1e-9, 'el peu del pal és al punt mig de la bancada 1'); }
+// el sentit, explícit: prop() és un valor absolut i la barra invertida passava
+ok(ap.barraY(0) > ap.barraY(1), 'la barra escotera es corba ENFORA: el centre queda a popa de les potes');
 
 // ─── 3) LES TRES VISTES ──────────────────────────────────────────────────
 function retrat(mode){
