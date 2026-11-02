@@ -93,6 +93,12 @@ fletxa és d'un 8% de la llum. Amb els valors de la làmina feia un pont del 45%
   (abans 0,165 a les zenitals i 0,146 en perspectiva). Només canvia el dibuix: la
   física treballa amb `wf` i `wx` de -1 a 1 i ja comptava el patró penjat a 1,50 m.
 
+- **Bancades.** Van fixades damunt dels bucs i fan tota la mànega: acaben a la vora
+  exterior, seguint la forma del buc (`vora()`). La de popa fa el doble de les altres
+  (0,104 eslores) i porta dues ratlles marró fosc.
+- **Escota.** Va recta quan la vela porta, encara que estigui amollada: la tiba la
+  vela. Només fa panxa quan flameja (`folgaEscota()`), igual a les tres vistes.
+
 ## El que NO s'ha tocat: la física
 
 `sailGeoLimit()` converteix la posició de l'escota en angle de vela i fa servir

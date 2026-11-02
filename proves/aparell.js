@@ -83,6 +83,12 @@ ok(creix, 'el calat creix de proa cap a la panxa');
   const v=fs.readFileSync('pati_vela_mobil.html','utf8').match(/id="versio">Versió (v\d+)</);
   const c=fs.readFileSync('pwa/service-worker.js','utf8').match(/pati-vela-(v\d+)/);
   ok(v && c && v[1]===c[1], `la versió del menú (${v&&v[1]}) és la de la memòria cau (${c&&c[1]})`); }
+// bancades: damunt dels bucs, fins a la vora exterior, i la de popa el doble
+{ const ap1=A.aparell();
+  for(const i of [0,1,2,3,4]){ const y=ap1.bancY(i), v=ap1.vora(y)/L;
+    ok(v>0.15 && v<0.20, `la bancada ${i+1} arriba a la vora exterior del buc (${v.toFixed(3)} eslores)`); }
+  ok(ap1.vora(0)/L>0.19, 'al mig del buc, la vora és a 0,19 eslores');
+  ok(Math.abs(A.RIG.bancTh[4]-2*Math.max(...A.RIG.bancTh.slice(0,4)))<1e-9, 'la bancada de popa fa el doble de les altres'); }
 // el sentit, explícit: prop() és un valor absolut i la barra invertida passava
 ok(ap.barraY(0) > ap.barraY(1), 'la barra escotera es corba ENFORA: el centre queda a popa de les potes');
 

@@ -196,6 +196,12 @@ Tres recorreguts, definits **sempre respecte del vent**:
 | Bastó (barlovent-sotavent) | B1 a 9 eslores vent amunt + porta de sotavent | 2 |
 | Triangle olímpic | B1, B2 (de través), B3 | 2 |
 | Costaner | C1 i C2, paral·leles a la costa | 1 |
+| Triangle equilàter | B1, B2, B3, cames de 463 m (0,25 NM), a 1 km | 1 |
+| Triangle rectangle | B1, B2, B3, 463-327-327 m (45-90-45), a 1 km | 1 |
+
+Els dos triangles són a mar obert i la seva posició no depèn del vent: només n'hi depèn
+l'orientació. El patí surt directament a la línia, i la barra diu la distància i el rumb
+fins a la boia següent.
 
 - Línia de sortida amb vaixell del comitè i boia, a 100 m de la costa, 29 m de mitja amplada.
 - El cronòmetre arrenca en creuar la línia.
