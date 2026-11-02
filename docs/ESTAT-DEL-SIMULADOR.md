@@ -138,7 +138,7 @@ Coeficients **calibrats contra temps de maniobra reals**. No hi ha modes: una so
 **Comportaments que cal preservar** (els mesura `proves/fisica.js`):
 
 - Virada: vela a l'altra banda i 30° de vent als 6,2 s; recupera 1,5 kn **a l'amura nova** als 9,7 s (9,8 s abans de la reducció de fregament). (Abans es deia 7,4 s i 15 s: la recepta de la prova no sortia de la virada i tornava a l'amura inicial. La física és la mateixa.)
-- Trasluixada: 8,7 s.
+- Trasluixada: 8,6 s (8,7 s abans que el patró caminés de banda a banda).
 - Gir navegant a 6 kn: 10 °/s.
 - Gir aturat amb el pes a popa: 11,5 °/s sostinguts (**mai més de 13**).
 - Empopada amb el pes centrat: deriva 0°, cap canvi de banda involuntari, 6,5 kn de mitjana.
@@ -155,6 +155,9 @@ l'angle de vela fins a 5° i hauria obligat a recalibrar-ho tot: vegeu `ESPEC-ap
 - **Esmorteïment quadràtic lligat al pes a popa.** Amb el pes enrere i sense arrancada, les
   popes s'enfonsen i fan de pivot mullat: el patí no pot rodar sobre si mateix. En una
   virada, en canvi, el pes va a proa i el gir iniciat es completa.
+- **Virada real (`proves/fisica.js`, punt 6).** Dret al pal amb l'escota al màxim (`F.culDret`, només per sota de 24° del vent: abans la vela treballa), cul a la vela i bossa; passat el vent, a popa i ajupit; la vela passa. A 12 kn: creua 4,6 s, vela 5,8 s, nou bord 11,3 s. Abans creuava als 6,7 s només amb el penell.
+- **Gest de virada a les dues amures.** `S.tackDir` recorda la banda de sortida fins que deixes anar el gest. Abans el signe era fix: des d'una amura la vela no passava mai amb l'escota caçada. Si es recorda poc, la vela torna enrere.
+- **El patró camina de banda a banda** (`ESC.pasLateral`, uns 2 s). Instantani, deixar barlovent alçava el buc abans que la proa orsés. A 12 kn ja no s'alça abans de creuar; a 18 kn encara sí (34°).
 - **Cul a la vela.** L'empenta és proporcional a com de a la contra queda la vela — la
   mateixa magnitud que decideix cap on s'infla — i al gest d'anar cap a popa.
 - **Rescat de la fula.** No actua mentre orses a posta (pes a proa i escota caçada), perquè
