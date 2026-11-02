@@ -162,6 +162,29 @@ l'angle de vela fins a 5° i hauria obligat a recalibrar-ho tot: vegeu `ESPEC-ap
 - **Panxa de la vela.** El costat cap on s'infla el decideix la pressió del vent
   (`-signe(sin(t + botavara))`), no on és la botavara.
 
+### Buc alçat (`aixecaBuc`, constants a `ESC`)
+
+`S.roll` és l'escora real, la que es veu i la que bolca. `S.heel` **no** és un angle i
+continua governant el gir i la deriva. El patí pivota sobre el buc de l'aigua: el moment del
+vent (creix amb el quadrat del vent) lluita contra el pes del buc i del patró. Ho vigila
+`proves/aixec.js`.
+
+| posició del patró | vent mínim a través (72 kg) |
+|---|---|
+| sotavent | 7,5 kn |
+| centre | 10 kn |
+| barlovent | 12 kn |
+| penjat | 13,5 kn |
+
+- **Calibratge real de l'Oriol:** assegut a barlovent s'alça cap als 12 kn; a sotavent amb
+  10 kn bolca de seguida (3,8 s). El moment teòric (14 m², 2,7 m) quedava curt i s'ha ajustat.
+- **`ESC.descarrega` és delicada.** El parell adreçador baixa en escorar: sense aquest terme,
+  tot buc alçat bolca. A 1,35 es navega amb el buc alçat i a sotavent bolca; a 1,45 ja no bolca.
+- **`ESC.mesBuc` = 85 kg**, no els 62 de `BOAT_KG`: amb 62, un patró de 100 kg penjat alçava
+  el buc de sotavent sense vent. El pes real del buc i la superfície vèlica estan per confirmar.
+- La bolcada ja no depèn de `S.heel`: passa als 60° de `S.roll`.
+- A les zenitals, el buc alçat es llegeix per la seva ombra separada i l'estela que deixa de fer.
+
 ---
 
 ## Regates

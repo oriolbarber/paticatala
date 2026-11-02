@@ -77,6 +77,13 @@ fletxa és d'un 8% de la llum. Amb els valors de la làmina feia un pont del 45%
   el pal mesurés 1,15 eslores en una vista i 1,00 en l'altra. Estacions:
   −0,275 · −0,099 · **0,092** · 0,261 · 0,430.
 
+- **Les mans del patró segueixen dues regles** (`MANS`, `agafada()`, `maEscota()`).
+  Una mà a l'escota, sobre la recta espatlla → politja central: es recull en caçar
+  i s'allarga en amollar. L'altra agafada a un punt real: cinta (assegut al mig),
+  regala interior (assegut al buc), regala exterior (penjat), obenc (dret i neutra).
+  L'escota la porta l'espatlla de dins del patí. A les zenitals el cos va pla, i
+  per això l'obenc s'agafa més avall: sobre l'obenc que es veu i a l'abast del braç.
+
 ## El que NO s'ha tocat: la física
 
 `sailGeoLimit()` converteix la posició de l'escota en angle de vela i fa servir

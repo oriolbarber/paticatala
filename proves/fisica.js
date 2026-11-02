@@ -32,11 +32,11 @@ console.log('FÍSICA (ha de donar el mateix que abans dels canvis de dibuix)\n')
   for(let i=0;i<60*16;i++){
     if(F.absT*R2D>24 && S.sailSide===1){ S.wfT=1; S.sheet=0.95; S.wxT=-0.3; }
     else if(S.sailSide===1){ S.wfT=-0.85; S.sheet=0.35; S.wxT=-0.1; }
-    else { S.wfT=0; S.sheet=0.88; S.wxT=0.4; }
+    else { S.wfT=0; S.sheet=S.speed>0.2?0.88:0.15; S.wxT=0.4; }
     A.updateWeight(1/60); A.physics(1/60); PIN(0.6);
     t += 1/60;
     if(S.sailSide===-1 && F.absT*R2D>30 && creuat===0) creuat=t;
-    if(S.sailSide===-1 && S.speed>0.25){ fet=true; break; }
+    if(S.sailSide===-1 && S.speed>0.25 && A.normA(S.heading)<0){ fet=true; break; }
   }
   console.log(`  virada: la vela passa de banda en ${creuat.toFixed(1)} s · recupera 1,5 kn als ${t.toFixed(1)} s`);
   cal(fet && creuat>0 && creuat<8 && t<17, 'virada completa i en temps real');
