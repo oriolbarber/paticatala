@@ -137,7 +137,7 @@ Coeficients **calibrats contra temps de maniobra reals**. No hi ha modes: una so
 
 **Comportaments que cal preservar** (els mesura `proves/fisica.js`):
 
-- Virada: la vela passa de banda en 7,4 s; el patí recupera 1,5 kn als 15 s.
+- Virada: vela a l'altra banda i 30° de vent als 6,2 s; recupera 1,5 kn **a l'amura nova** als 9,8 s. (Abans es deia 7,4 s i 15 s: la recepta de la prova no sortia de la virada i tornava a l'amura inicial. La física és la mateixa.)
 - Trasluixada: 8,7 s.
 - Gir navegant a 6 kn: 10 °/s.
 - Gir aturat amb el pes a popa: 11,5 °/s sostinguts (**mai més de 13**).

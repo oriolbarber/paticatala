@@ -168,7 +168,7 @@ temps de maniobra reals, i `proves/fisica.js` els vigila:
 
 | | |
 |---|---|
-| virada: la vela passa de banda | 7,4 s |
+| virada: la vela a l'altra banda i 30° de vent | 6,2 s |
 | trasluixada | 8,7 s |
 | gir navegant a 6 kn | 10 °/s |
 | gir aturat amb el pes a popa | 11,5 °/s (mai més de 13) |
