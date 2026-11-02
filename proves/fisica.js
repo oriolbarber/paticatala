@@ -30,8 +30,8 @@ console.log('FÍSICA (ha de donar el mateix que abans dels canvis de dibuix)\n')
   for(let i=0;i<120;i++){ A.updateWeight(1/60); A.physics(1/60); PIN(0.6); }
   let t=0, fet=false, creuat=0;
   for(let i=0;i<60*16;i++){
-    if(F.absT*R2D>24 && S.sailSide===1){ S.wfT=1; S.sheet=0.95; S.wxT=-0.3; }
-    else if(S.sailSide===1){ S.wfT=-0.85; S.sheet=0.35; S.wxT=-0.1; }
+    if(S.sailSide===1 && A.normA(S.heading)>0){ S.wfT=1; S.sheet=1; S.wxT=0; }
+    else if(S.sailSide===1){ S.wfT=-1; S.wxT=0; }
     else { S.wfT=0; S.sheet=S.speed>0.2?0.88:0.15; S.wxT=0.4; }
     A.updateWeight(1/60); A.physics(1/60); PIN(0.6);
     t += 1/60;
@@ -89,19 +89,29 @@ for(const [w,mx] of [[8,0],[12,1]]){
     A.resetToBeach(); S.mode='mar'; S.everInWater=true; PIN(0.6); S.windFrom=0; S.windKn=w;
     S.heading=tk*48*D2R; S.speed=0.6; S.sheet=0.85; S.sailSide=tk; S.pulley=tk; S.wx=S.wxT=-0.86*tk; S.wf=S.wfT=0; S.angVel=0;
     for(let i=0;i<900;i++){ S.heading=tk*48*D2R; S.angVel=0; A.updateWeight(1/60); A.physics(1/60); PIN(0.6); }
-    let fase=1, creua=0, vela=0, nou=0, pic=0;
+    let fase=1, creua=0, vela=0, nou=0, pic=0, yVela=0;
     for(let i=0;i<60*24 && !nou;i++){
       const t=i/60, h=tk*A.normA(S.heading)*R2D;
       if(fase===1){ S.wfT=1; S.wxT=0; S.sheet=1; if(h<=0){ fase=2; creua=t; } }
-      else if(fase===2){ S.wfT=-1; S.wxT=0; if(S.sailSide===-tk){ fase=3; vela=t; } }
+      else if(fase===2){ S.wfT=-1; S.wxT=0; if(S.sailSide===-tk){ fase=3; vela=t; yVela=A.crewY(S.wf)/A.L; } }
       else if(t>vela+1){ S.wfT=0; S.wxT=0.86*tk; S.sheet=S.speed>0.2?0.85:0.3; if(S.speed>0.25 && h<-30) nou=t; }
       A.updateWeight(1/60); A.physics(1/60); PIN(0.6);
       if(fase===1) pic=Math.max(pic,Math.abs(S.roll)*R2D);
     }
-    return {creua,vela,nou,pic,cap:S.capsized>0};
+    return {creua,vela,nou,pic,yVela,cap:S.capsized>0};
   });
-  console.log(`  virada real a ${w} kn: creua ${r[0].creua.toFixed(1)} s · vela ${r[0].vela.toFixed(1)} s · nou bord ${r[0].nou.toFixed(1)} s · buc ${r[0].pic.toFixed(1)}°`);
+  console.log(`  virada real a ${w} kn: creua ${r[0].creua.toFixed(1)} s · vela ${r[0].vela.toFixed(1)} s · nou bord ${r[0].nou.toFixed(1)} s · buc ${r[0].pic.toFixed(1)}° · patró a ${r[0].yVela.toFixed(3)} eslores`);
+  cal(r.every(e=>e.vela>e.creua && Math.abs(e.yVela-0.092)<0.03), `a ${w} kn, la vela passa per sobre del patró a la bancada 3`);
   cal(r.every(e=>e.nou>0 && !e.cap && e.creua<6 && e.pic<=mx), `virada real a ${w} kn, sense bloqueig ni buc alçat`);
   cal(Math.abs(r[0].vela-r[1].vela)<0.1 && Math.abs(r[0].nou-r[1].nou)<0.1, `a ${w} kn, les dues amures viren igual`);
+}
+// 7) A POPA MASSA AVIAT, per la banda que serà sotavent: la vela no passa abans del vent
+for(const w of [8,12,18]) for(const tk of [1,-1]){
+  A.resetToBeach(); S.mode='mar'; S.everInWater=true; PIN(0.6); S.windFrom=0; S.windKn=w;
+  S.heading=tk*40*D2R; S.speed=0.5; S.sheet=1; S.sailSide=tk; S.pulley=tk; S.wx=S.wxT=-0.86*tk; S.wf=S.wfT=-1; S.angVel=0;
+  let abans=false, cap=false;
+  for(let i=0;i<60*10;i++){ S.wfT=-1; S.wxT=-0.86*tk; S.sheet=1; A.updateWeight(1/60); A.physics(1/60); PIN(0.6);
+    if(S.sailSide===-tk && tk*A.normA(S.heading)>0) abans=true; cap=cap||S.capsized>0; }
+  cal(!abans && !cap, `${w} kn, amura ${tk}: a popa massa aviat, la vela espera i no bolca`);
 }
 console.log('\n' + (ok?'═══ FÍSICA SENSE CANVIS ✔ ═══':'✗ LA FÍSICA HA CANVIAT'));
