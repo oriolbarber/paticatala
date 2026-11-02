@@ -78,6 +78,11 @@ ok(creix, 'el calat creix de proa cap a la panxa');
 { const peus=[-1,-0.5,0,0.5,1].map(r=>{ S.rake=r; return A.aparell().peuPal[1]; }); S.rake=0;
   ok(peus.every(y=>y===peus[0]), 'el peu del pal no es mou amb les mordasses');
   ok(Math.abs(peus[0]-ap.bancY(0))<1e-9, 'el peu del pal és al punt mig de la bancada 1'); }
+// el número del menú és el de la memòria cau: si no, no serveix per saber què hi ha
+{ const fs=require('fs');
+  const v=fs.readFileSync('pati_vela_mobil.html','utf8').match(/id="versio">Versió (v\d+)</);
+  const c=fs.readFileSync('pwa/service-worker.js','utf8').match(/pati-vela-(v\d+)/);
+  ok(v && c && v[1]===c[1], `la versió del menú (${v&&v[1]}) és la de la memòria cau (${c&&c[1]})`); }
 // el sentit, explícit: prop() és un valor absolut i la barra invertida passava
 ok(ap.barraY(0) > ap.barraY(1), 'la barra escotera es corba ENFORA: el centre queda a popa de les potes');
 
