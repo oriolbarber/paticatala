@@ -55,7 +55,7 @@ que hi havia al repositori.
 
 ### La bateria de proves
 
-Aquí n'hi ha tretze, les que es fan servir més. **La bateria sencera (uns 60
+Aquí n'hi ha catorze, les que es fan servir més. **La bateria sencera (uns 60
 programes) és al coneixement del projecte «Pati Català» de claude.ai**, a la
 carpeta `proves/`, amb el seu `LLEGEIX-ME.md`. Si en una sessió calen proves que
 aquí no hi són, es recuperen d'allà i es deixen al repositori.
@@ -69,6 +69,7 @@ node proves/escota.js     # recorregut de l'escota
 node proves/politja.mjs   # la politja sempre damunt la barra (Chromium)
 node proves/bracos.js     # una mà a l'escota, l'altra agafada a un punt real
 node proves/escora.mjs    # el patí es tomba sencer, sense deformar-se (Chromium)
+node proves/limit.js      # navega fins a les 3 milles sense perdre velocitat
 node proves/tornar.mjs    # botó de tornada (Chromium)
 node proves/tipografies.mjs   # tipografies incrustades, sense xarxa
 node proves/interficie.mjs    # tots els controls, buscant errors de JS
