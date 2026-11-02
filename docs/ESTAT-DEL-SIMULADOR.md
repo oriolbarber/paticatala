@@ -183,7 +183,7 @@ vent (creix amb el quadrat del vent) lluita contra el pes del buc i del patró. 
 - **`ESC.mesBuc` = 85 kg**, no els 62 de `BOAT_KG`: amb 62, un patró de 100 kg penjat alçava
   el buc de sotavent sense vent. El pes real del buc i la superfície vèlica estan per confirmar.
 - La bolcada ja no depèn de `S.heel`: passa als 60° de `S.roll`.
-- A les zenitals, el buc alçat es llegeix per la seva ombra separada i l'estela que deixa de fer.
+- A les zenitals, `escoraZenital()` deforma el patí sencer: el buc de l'aigua no es mou i el de barlovent s'hi acosta i puja de pantalla. L'alçada s'exagera un 30% (`ESC.guanyZenital`), una exageració declarada com `RIG.escorcZen`. L'ombra (`ombraBucs()`) es dibuixa a part perquè es quedi a l'aigua: aquest buit és el que fa llegir l'alçada.
 
 ---
 
