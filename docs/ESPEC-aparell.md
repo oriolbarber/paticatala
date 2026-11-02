@@ -21,11 +21,15 @@ del patí (`bx` través · `by` proa-popa · `z` alçada sobre la flotació).
 | alçada del puny d'escota | 0,246 | 0,246 |
 | pujament (amura → escota) | 0,581 | 0,620 \* |
 | barra escotera: potes | 0,452 | 0,450 |
-| barra escotera: avanç al centre | 0,086 | 0,086 |
-| barra escotera: alçada de l'arc | 0,123 | 0,123 |
+| barra escotera: avanç al centre | 0,086 | 0,015 † |
+| barra escotera: alçada de l'arc | 0,123 | 0,021 † |
+| barra escotera: mitja amplada | — | 0,155 |
 
 \* El pujament es queda a 0,620 perquè és el valor **calibrat** de la física
 (vegeu més avall). La diferència són 22 cm: no es nota.
+
+† L'arc de la barra surt de la **foto** de la barra real, no de la làmina: la
+fletxa és d'un 8% de la llum. Amb els valors de la làmina feia un pont del 45%.
 
 ## Decisions preses
 
@@ -39,10 +43,14 @@ del patí (`bx` través · `by` proa-popa · `z` alçada sobre la flotació).
   zenital l'alçada es projecta cap amunt de la pantalla (2,5D); amb l'alçada
   real la vela tapava mitja coberta i la vista deixava de servir per governar.
   L'escorç està declarat i documentat, no amagat en una constant de dibuix.
-- **La barra escotera és un arc de debò.** Fa de pont: al centre puja 0,123
-  eslores i avança 0,086. Abans l'arc només existia en planta (avançava al
-  centre) perquè la politja fos biestable; ara també puja, que és el motiu
-  físic real pel qual la politja no s'hi queda al mig.
+- **La barra escotera és un arc suau.** Al centre puja 0,021 eslores i avança
+  0,015 (14 cm de fletxa en 1,74 m de llum). La biestabilitat de la politja la
+  dona la física (`BAR_ARCH`), que no depèn d'aquest dibuix.
+- **La politja surt dels mateixos punts que la barra.** `aparell()` dona
+  `barraX/Y/Z` i `carroU()`, i les tres vistes en depenen. A les zenitals la
+  barra s'aixeca amb el mateix escorç que la politja (`escorcZenital()`). El
+  carro d'acer es dibuixa a les tres vistes i s'atura als topalls, un 7% abans
+  de les plaques. Ho vigila `proves/politja.mjs`, en píxels reals.
 - **No hi ha estai de popa.** El patí no en porta: la baluma hi va lliure. El
   codi en dibuixava un. S'ha tret i s'han posat els tres ancoratges reals:
   estai de proa (−0,490), obenc mitjà (−0,312, a l'estació del pal) i obenc de

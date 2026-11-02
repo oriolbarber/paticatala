@@ -54,8 +54,8 @@ const files = [
   ["alçada del puny d'escota",          0.246, prop(ap.escota[2]-ap.HULLH)],
   ["pujament (amura → escota)",         0.581, prop(Math.hypot(ap.escota[0]-ap.amura[0], ap.escota[1]-ap.amura[1]))],
   ["barra escotera: potes",             0.452, prop(ap.barraY(1))],
-  ["barra escotera: avanç al centre",   0.086, prop(ap.barraY(1)-ap.barraY(0))],
-  ["barra escotera: alçada de l'arc",   0.123, prop(ap.barraZ(0)-ap.barraZ(1))],
+  ["barra escotera: avanç al centre",   0.015, prop(ap.barraY(1)-ap.barraY(0))],
+  ["barra escotera: alçada de l'arc",   0.021, prop(ap.barraZ(0)-ap.barraZ(1))],
 ];
 for(const [nom, plan, codi] of files){
   const d = Math.abs(plan-codi);
