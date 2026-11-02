@@ -26,6 +26,20 @@ const passos = [
   // No és cap problema de l'app —el dit sí que hi arriba—, però la prova ha de
   // forçar el clic o s'esperaria per sempre.
   ['entrar al mar',                 async()=>{ await pg.click('#btnEntrar', {force:true}); await pg.waitForTimeout(800); }],
+  ['escota: avall caça, amunt amolla', async()=>{
+      const r = await pg.evaluate(()=>{ const q=document.getElementById('escotaTrack').getBoundingClientRect();
+                                        return {x:q.left+q.width/2, y0:q.top, y1:q.bottom}; });
+      const prova = async(y, esperat, nom)=>{
+        await pg.mouse.move(r.x, y); await pg.mouse.down(); await pg.mouse.up(); await pg.waitForTimeout(120);
+        const s = await pg.evaluate(()=>S.sheet);
+        const top = parseFloat(await pg.evaluate(()=>document.getElementById('escotaKnob').style.top));
+        if(Math.abs(s-esperat) > 0.03) throw new Error(`${nom}: S.sheet = ${s.toFixed(2)}, esperat ${esperat}`);
+        if(Math.abs(top-esperat*100) > 3) throw new Error(`${nom}: el polze és al ${top}%`);
+      };
+      await prova(r.y1-1, 1, 'baix de tot');
+      await prova(r.y0+1, 0, 'dalt de tot');
+      await prova((r.y0+r.y1)/2, 0.5, 'al mig');
+    }],
   ['canviar de càmera (3 modes)',   async()=>{ for(let i=0;i<3;i++){ await pg.click('#btnCam'); await pg.waitForTimeout(350);} }],
   ['cicle de zoom complet',         async()=>{ for(let i=0;i<4;i++){ await pg.click('#btnZoom'); await pg.waitForTimeout(250);} }],
   ['obrir i tancar el mapa',        async()=>{ await pg.click('#btnMapa'); await pg.waitForTimeout(400); await pg.click('#ovMapa'); }],

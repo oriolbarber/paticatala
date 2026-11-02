@@ -4,7 +4,7 @@
 // v2: s'ha canviat el dibuix de l'embarcació (pal, vela, barra escotera i buc).
 // Pujar aquest número és el que fa que els mòbils ja instal·lats es quedin la
 // versió nova en comptes de la que tenen a la memòria cau.
-const CACHE = 'pati-vela-v14';
+const CACHE = 'pati-vela-v15';
 const ASSETS = [
   './',
   './index.html',
