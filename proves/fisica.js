@@ -110,9 +110,12 @@ for(const [w,mx] of [[8,0],[12,1]]){
 for(const w of [8,12,18]) for(const tk of [1,-1]){
   A.resetToBeach(); S.mode='mar'; S.everInWater=true; PIN(0.6); S.windFrom=0; S.windKn=w;
   S.heading=tk*40*D2R; S.speed=0.5; S.sheet=1; S.sailSide=tk; S.pulley=tk; S.wx=S.wxT=-0.86*tk; S.wf=S.wfT=-1; S.angVel=0;
-  let abans=false, cap=false;
-  for(let i=0;i<60*10;i++){ S.wfT=-1; S.wxT=-0.86*tk; S.sheet=1; A.updateWeight(1/60); A.physics(1/60); PIN(0.6);
-    if(S.sailSide===-tk && tk*A.normA(S.heading)>0) abans=true; cap=cap||S.capsized>0; }
+  // Només fins que la vela ha passat: després el patró es queda a la banda que ara és
+  // sotavent, amb l'escota caçada, i amb 12 kn bolcar és el que toca (v23: abans la proa
+  // tornava al vent i la virada no s'acabava mai, i per això no bolcava).
+  let abans=false, cap=false, passada=false;
+  for(let i=0;i<60*10 && !passada;i++){ S.wfT=-1; S.wxT=-0.86*tk; S.sheet=1; A.updateWeight(1/60); A.physics(1/60); PIN(0.6);
+    if(S.sailSide===-tk && tk*A.normA(S.heading)>0) abans=true; cap=cap||S.capsized>0; passada=S.sailSide===-tk; }
   cal(!abans && !cap, `${w} kn, amura ${tk}: a popa massa aviat, la vela espera i no bolca`);
 }
 console.log('\n' + (ok?'═══ FÍSICA SENSE CANVIS ✔ ═══':'✗ LA FÍSICA HA CANVIAT'));

@@ -156,6 +156,14 @@ l'angle de vela fins a 5° i hauria obligat a recalibrar-ho tot: vegeu `ESPEC-ap
   popes s'enfonsen i fan de pivot mullat: el patí no pot rodar sobre si mateix. En una
   virada, en canvi, el pes va a proa i el gir iniciat es completa.
 - **Virada real (`proves/fisica.js`, punt 6).** Dret al pal amb l'escota al màxim (`F.culDret`, només per sota de 24° del vent: abans la vela treballa), cul a la vela i bossa; passat el vent, a popa; la vela passa per sobre del patró a la bancada 3 (0,092 eslores). A 12 kn: creua 4,8 s, vela 6,0 s, nou bord 11,4 s. Abans creuava als 6,7 s només amb el penell.
+- **Acabar la virada (v23, `S.postVir`).** Amb els controls del mòbil a la v22, la vela
+  passava però el patí, aturat a 15-25° del vent i amb l'escota caçada, feia de penell i
+  tornava a creuar el vent; el gest de virar es tornava a activar i la vela se n'anava al
+  costat de l'inici. Ara, passada la vela, fins que el patí corre (1,8 kn) o cau a 50° del
+  vent (12 s com a molt): la vela nova no fa de penell, la proa cau cap a l'amura nova i
+  quedar-se a popa ja no és un gest nou de virar. Ho vigila `proves/virada_mobil.js`
+  (96 virades: 5, 8, 10 i 12 kn, dues amures, escota caçada o a 0,85, a popa en passar el
+  vent o 20° abans, per sotavent, pel centre o per barlovent). v21: 96 fallen; v22: 48.
 - **Gest de virada a les dues amures.** `S.tackDir` recorda la banda de sortida fins que deixes anar el gest. Abans el signe era fix: des d'una amura la vela no passava mai amb l'escota caçada. Si es recorda poc, la vela torna enrere.
 - **La vela passa perquè s'ha creuat el vent.** Amb l'escota caçada (`S.sheet > 0,7`) la vela s'aguanta però no canvia de banda abans de creuar; si no, passava a 14° de vent, el patí no creuava, tornava enrere i bolcava amb el patró a sotavent. `creuat` demana que la proa s'allunyi del vent: l'estat és el mateix que el de la vela passada abans d'hora. Amollada es manté la vela a la contra, que és com surt de la fula i com gira aturat.
 - **El patró camina** (`ESC.pasLlarg`, del pal a popa uns 2,2 s; `ESC.pasLateral`, de banda a banda uns 2 s). Instantani, deixar barlovent alçava el buc abans que la proa orsés. A 12 kn ja no s'alça abans de creuar; a 18 kn encara sí (34°).

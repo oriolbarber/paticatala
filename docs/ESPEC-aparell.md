@@ -103,6 +103,14 @@ fletxa és d'un 8% de la llum. Amb els valors de la làmina feia un pont del 45%
 - **Escota.** Va recta quan la vela porta, encara que estigui amollada: la tiba la
   vela. Només fa panxa quan flameja (`folgaEscota()`), igual a les tres vistes.
 
+## Puntes dels bucs (v23)
+
+Retallades 5 cm i arrodonides amb un arc tangent als dos costats (`puntesRodones()`),
+el mateix contorn a les tres vistes (`CONTORN_BUC`, i el polígon de la perspectiva) i a
+`ampladaBuc()`. Radi: 1,7 cm a proa (punta fina) i 5,1 cm a popa. Eslora dibuixada
+5,50 m; la de la física continua sent 5,60 m. Les potes de la barra queden a 2,8 cm de
+l'extrem nou, amb el buc de 4,2 cm de mitja amplada i la placa a 2,8 cm de l'eix.
+
 ## La vela (v22)
 
 `sailGeoLimit()` no s'ha tocat: continua donant l'angle de baix de la vela (de 19°
@@ -129,6 +137,20 @@ caçada a 80° amollada). Per sobre, a `physics()`:
 
 `VELA.lateral` i `VELA.empenta` estan calibrats perquè passin `aixec.js` (barlovent
 a través s'alça a 11,5 kn) i `fisica.js`.
+
+## Recalibratge amb el GPS (v23)
+
+Tres sortides de l'Oriol a Ocata, gravades amb GPS: amb uns 10 kn de vent el patí fa
+6–8 kn al través i al través llarg, i amb 3–5 kn de vent en fa 3–5.
+
+- La força de la vela va amb el quadrat del vent (abans, lineal).
+- Fre del buc (`BUC`): fricció 0,08·v², lineal 0,01·v i onada 0,14·v⁴ (abans
+  0,44·v² + 0,07·v). Pesa poc a poca velocitat i limita la punta.
+- `BUC.vGir` 1,5 (abans 0,9 fix): el fre del gir dels bucs segueix la velocitat nova
+  perquè les maniobres no canviïn.
+- `VELA.lateral` 0,85 i `ESC.fregament` 0,30 perquè el buc s'alci a través amb 12 kn
+  assegut a barlovent i, alçat, guanyi de 0,5 a 1 kn.
+- Resultat a través/través llarg: 5 kn → 4,6 · 10 kn → 7,7 · 12 kn → 8,5 · 15 kn → 9,5.
 
 ## El que NO s'ha tocat: la física
 
