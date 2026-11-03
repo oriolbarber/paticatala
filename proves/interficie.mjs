@@ -59,6 +59,22 @@ const passos = [
       if(!await vis()) throw new Error('en perspectiva ha de ser-hi sempre');
       await pg.evaluate(()=>{ S.wxT=0; cam.mode='popa'; });
     }],
+  ['joystick: quiet mentre s\u2019arrossega, passi el que passi', async()=>{
+      await pg.evaluate(()=>{ cam.mode='popa'; joyZen=true; S.wfT=0; }); await pg.waitForTimeout(300);
+      const q = await pg.evaluate(()=>{ const r=document.getElementById('joy').getBoundingClientRect();
+                                        return {x:r.left+r.width/2, y:r.top+r.height/2, top:r.top}; });
+      await pg.mouse.move(q.x, q.y-20); await pg.mouse.down(); await pg.waitForTimeout(120);
+      const w0 = await pg.evaluate(()=>S.wfT);
+      // maquetació hostil: el joystick es desplaça sota el dit
+      await pg.evaluate(()=>{ document.getElementById('joy').style.marginBottom='60px'; }); await pg.waitForTimeout(300);
+      await pg.mouse.move(q.x, q.y-20.5); await pg.waitForTimeout(120);
+      const w1 = await pg.evaluate(()=>S.wfT);
+      const dalt = await pg.evaluate(()=>{ document.getElementById('joy').style.marginBottom=''; return getComputedStyle(document.getElementById('pista')).display; });
+      await pg.mouse.up();
+      if(Math.abs(w1-w0) > 0.05) throw new Error(`el pes salta de ${w0.toFixed(2)} a ${w1.toFixed(2)} amb el dit quiet`);
+      if(dalt !== 'none') throw new Error('navegant no hi ha d\u2019haver comentaris');
+      await pg.evaluate(()=>{ joyZen=false; S.wfT=0; });
+    }],
   ['canviar de càmera (3 modes)',   async()=>{ for(let i=0;i<3;i++){ await pg.click('#btnCam'); await pg.waitForTimeout(350);} }],
   ['cicle de zoom complet',         async()=>{ for(let i=0;i<4;i++){ await pg.click('#btnZoom'); await pg.waitForTimeout(250);} }],
   ['obrir i tancar el mapa',        async()=>{ await pg.click('#btnMapa'); await pg.waitForTimeout(400); await pg.click('#ovMapa'); }],
