@@ -164,6 +164,15 @@ l'angle de vela fins a 5° i hauria obligat a recalibrar-ho tot: vegeu `ESPEC-ap
   quedar-se a popa ja no és un gest nou de virar. Ho vigila `proves/virada_mobil.js`
   (96 virades: 5, 8, 10 i 12 kn, dues amures, escota caçada o a 0,85, a popa en passar el
   vent o 20° abans, per sotavent, pel centre o per barlovent). v21: 96 fallen; v22: 48.
+- **La vela a la platja (v24, `velaATerra`).** Abans de sortir el patí és a terra (no
+  avança, no escora ni deriva) però la vela ja és al vent: `aeroVela()` i `mouVela()` són
+  les mateixes que navegant, amb el vent aparent igual al real. La politja la fa córrer el
+  vent; si el patí es gira a mà i la vela queda a la contra, el vent la tomba a sotavent
+  (també aproada; per popa no, fins que trabutja). El patí es gira com abans: tocar lluny a
+  les zenitals, el joystick a la perspectiva, A/D o les fletxes al PC. En sortir la velocitat
+  passa de cop a 0,32 i el vent aparent canvia: per això la forma dibuixada (flameig, panxa,
+  baluma, folga de l'escota) segueix `F.luffV`, `F.clV`, `F.twistV` i `F.flapV`, suavitzades
+  en 0,12 s. Ho vigila `proves/platja.js`.
 - **Gest de virada a les dues amures.** `S.tackDir` recorda la banda de sortida fins que deixes anar el gest. Abans el signe era fix: des d'una amura la vela no passava mai amb l'escota caçada. Si es recorda poc, la vela torna enrere.
 - **La vela passa perquè s'ha creuat el vent.** Amb l'escota caçada (`S.sheet > 0,7`) la vela s'aguanta però no canvia de banda abans de creuar; si no, passava a 14° de vent, el patí no creuava, tornava enrere i bolcava amb el patró a sotavent. `creuat` demana que la proa s'allunyi del vent: l'estat és el mateix que el de la vela passada abans d'hora. Amollada es manté la vela a la contra, que és com surt de la fula i com gira aturat.
 - **El patró camina** (`ESC.pasLlarg`, del pal a popa uns 2,2 s; `ESC.pasLateral`, de banda a banda uns 2 s). Instantani, deixar barlovent alçava el buc abans que la proa orsés. A 12 kn ja no s'alça abans de creuar; a 18 kn encara sí (34°).
