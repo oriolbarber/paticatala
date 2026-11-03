@@ -73,10 +73,11 @@ console.log('FÍSICA (ha de donar el mateix que abans dels canvis de dibuix)\n')
   console.log(`  aturat amb el pes a popa: ${sost.toFixed(1)}°/s sostinguts · ${(girTot/(2*Math.PI)).toFixed(2)} voltes en 12 s`);
   cal(sost<13 && girTot/(2*Math.PI)<0.75, 'aturat no roda sobre si mateix');
 }
-// 5) navegant, el gir segueix sent viu
+// 5) navegant, el gir segueix sent viu. Amb la vela portant: des del vent aparent
+//    (v22), a 60° i 6 kn l'escota a 0,7 deixa la vela flamejant, i flamejant no governa.
 {
   A.resetToBeach(); S.mode='mar'; S.everInWater=true; PIN(0.6); S.windFrom=0; S.windKn=12;
-  S.heading=60*D2R; S.speed=1.0; S.sheet=0.7; S.wf=1; S.wfT=1; S.wx=-0.6; S.wxT=-0.6;
+  S.heading=60*D2R; S.speed=1.0; S.sheet=0.9; S.wf=1; S.wfT=1; S.wx=-0.6; S.wxT=-0.6;
   let maxW=0;
   for(let i=0;i<60*6;i++){ A.updateWeight(1/60); A.physics(1/60); PIN(0.6); maxW=Math.max(maxW,Math.abs(S.angVel)); }
   console.log(`  navegant: gir màxim ${(maxW*R2D).toFixed(0)}°/s`);

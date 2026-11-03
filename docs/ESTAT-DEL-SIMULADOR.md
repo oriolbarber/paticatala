@@ -164,7 +164,8 @@ l'angle de vela fins a 5° i hauria obligat a recalibrar-ho tot: vegeu `ESPEC-ap
 - **Rescat de la fula.** No actua mentre orses a posta (pes a proa i escota caçada), perquè
   si no la proa rebota. El criteri per caure de proa és físic: aturat i amb la vela sense força.
 - **Panxa de la vela.** El costat cap on s'infla el decideix la pressió del vent
-  (`-signe(sin(t + botavara))`), no on és la botavara.
+  (`-signe(sin(t + boomDir))`), no on és el puny d'escota. El patí no té botavara:
+  `boomDir` és l'angle de la corda puny d'amura → puny d'escota.
 
 ### Buc alçat (`aixecaBuc`, constants a `ESC`)
 

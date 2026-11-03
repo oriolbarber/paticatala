@@ -20,7 +20,7 @@ del patí (`bx` través · `by` proa-popa · `z` alçada sobre la flotació).
 | alçada del puny d'amura | 0,115 | 0,115 |
 | alçada del puny d'escota | 0,246 | 0,246 |
 | pujament (amura → escota) | 0,581 | 0,620 \* |
-| barra escotera: potes | 0,452 | 0,450 |
+| barra escotera: potes | 0,452 | 0,486 § |
 | barra escotera: recula al centre | 0,086 (avanç) | 0,028 † |
 | barra escotera: alçada de l'arc | 0,123 | 0,020 † |
 | barra escotera: mitja amplada | — | 0,155 |
@@ -30,6 +30,10 @@ del patí (`bx` través · `by` proa-popa · `z` alçada sobre la flotació).
 
 ‡ L'Oriol situa el peu del pal al punt mig de la bancada 1, que és on el tenia la
 física (`sailGeoLimit`). Les mordasses mouen el cap: el peu és el pivot i no es mou.
+
+§ L'Oriol la vol 20 cm més a popa (v22): les potes queden a 8 cm de l'extrem dels
+bucs, darrere la bancada de popa, i el centre de l'arc 8 cm més enllà. És només el
+dibuix: la barra de la física (`SB_Y`, 0,47) no s'ha mogut.
 
 † L'arc de la barra surt de la **foto** de la barra real, no de la làmina: la
 fletxa és d'un 8% de la llum. Amb els valors de la làmina feia un pont del 45%.
@@ -98,6 +102,33 @@ fletxa és d'un 8% de la llum. Amb els valors de la làmina feia un pont del 45%
   (0,104 eslores) i porta dues ratlles marró fosc.
 - **Escota.** Va recta quan la vela porta, encara que estigui amollada: la tiba la
   vela. Només fa panxa quan flameja (`folgaEscota()`), igual a les tres vistes.
+
+## La vela (v22)
+
+`sailGeoLimit()` no s'ha tocat: continua donant l'angle de baix de la vela (de 19°
+caçada a 80° amollada). Per sobre, a `physics()`:
+
+- **Vent aparent.** La vela veu el vent que li arriba amb el patí en marxa (angle i
+  pressió). Les maniobres (virar, vora morta, trasluixar) continuen mirant el real.
+- **Sustentació contínua** (`VELA`, `corbaCL()`): òptim a uns 20° d'angle d'atac,
+  pèrdua progressiva i zero a 90°; resistència induïda i de placa plana. Sense esglaons.
+- **Flameig progressiu** de la vora del davant (`F.luff`): comença a 8° d'atac.
+- **Gir en alçada** (`F.twist`), en tres franges: amollar obre la baluma i descarrega
+  dalt; caçar a fons aplana (`VELA.aplana`). Sota pressió el puny cedeix i la baluma
+  s'obre sola (`twistQ`, fins a 23°). L'escora surt del moment de les tres franges
+  (`F.sideEsc`), i per això el gir treu escora.
+- **Dibuix** (`formaVela()`): la mateixa panxa i obertura de baluma a perspectiva i
+  zenitals.
+- **Deriva**: s'aproxima de manera exponencial; ja no depèn dels fotogrames per segon.
+  El pla lateral són els bucs en V (`DERIVA`): resistència de forma que no s'anul·la a
+  poc a poc i que creix quan el buc de sotavent s'enfonsa. Navegant bé fa 2-6°, i caçat
+  de més no passa de 4°.
+- **Caçat de més**: passat l'òptim queda sustentació de placa plana (`VELA.residu`).
+  A través caçat a fons el patí es queda a 4,3 kn, sense espiral, i en amollar recupera
+  la marxa en 3 s.
+
+`VELA.lateral` i `VELA.empenta` estan calibrats perquè passin `aixec.js` (barlovent
+a través s'alça a 11,5 kn) i `fisica.js`.
 
 ## El que NO s'ha tocat: la física
 
