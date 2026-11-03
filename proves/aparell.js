@@ -67,12 +67,17 @@ ok(grausCai>8 && grausCai<14, `el pal cau ${grausCai.toFixed(1)}° cap a popa (l
 
 // ─── 2) ROCAIA DEL FONS ──────────────────────────────────────────────────
 console.log('\nROCAIA DEL BUC (0 = proa, 1 = popa)');
-const r = [0,0.15,0.3,0.5,0.7,0.88,1].map(t=>[t, A.calatRel(t)]);
+const r = [0,0.05,0.15,0.3,0.5,0.7,0.88,0.95,0.98,1].map(t=>[t, A.calatRel(t)]);
 console.log('  ' + r.map(([t,v])=>`${t}:${v.toFixed(2)}`).join('  '));
-ok(A.calatRel(0)===0, "la proa surt de l'aigua");
-ok(A.calatRel(1)<0.8 && A.calatRel(1)>0.3, 'la popa torna a pujar, però menys que la proa');
-let creix=true; for(let i=1;i<5;i++) if(r[i][1] <= r[i-1][1]) creix=false;
-ok(creix, 'el calat creix de proa cap a la panxa');
+// v25: quilla corbada mesurada sobre la foto de perfil de l'Oriol. Abans la popa
+// acabava al 60% de l'alçada, com un mirall pla.
+ok(A.calatRel(0)===0 && A.calatRel(1)===0, 'les dues puntes tanquen amb la coberta (sense mirall)');
+ok(A.calatRel(0.05)>0.45 && A.calatRel(0.05)<0.65, 'la proa tanca amb una corba, no en punta');
+ok(A.calatRel(0.95)>0.45 && A.calatRel(0.95)<0.75, 'a popa el fons queda aixecat (quilla corbada)');
+ok(A.calatRel(0.5)===1, 'al mig el fons és pla');
+let creix=true; for(let i=1;i<5;i++) if(r[i][1] < r[i-1][1]) creix=false;
+let decreix=true; for(let i=6;i<r.length;i++) if(r[i][1] > r[i-1][1]) decreix=false;
+ok(creix && decreix, 'el calat creix de proa cap a la panxa i decreix cap a popa');
 
 // el peu és el pivot: les mordasses només mouen el cap del pal
 { const peus=[-1,-0.5,0,0.5,1].map(r=>{ S.rake=r; return A.aparell().peuPal[1]; }); S.rake=0;
