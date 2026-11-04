@@ -214,6 +214,16 @@ l'angle de vela fins a 5° i hauria obligat a recalibrar-ho tot: vegeu `ESPEC-ap
   patró al dibuix (`CREW_X`, `crewY`), per tant sempre damunt les bancades; la zona que
   respon al dit continua sent el cercle de sempre, que és el que escombra la silueta en
   girar. Prova: `proves/joystick.mjs`.
+  **Gest per passos (v28, `joyAlPati`, `joySt.vx/vy`).** A la v27 tota la posició del dit es
+  tornava a llegir amb l'angle de cada moment: virant, a la zenital nord, el dit quiet a
+  «popa» passava a voler dir «una banda» (fins a 1,2 de desplaçament del pes) i el pes se
+  n'anava a barlovent; el patí no orsava i la vela tornava (l'error de l'Oriol). Ara en
+  tocar es pren la posició, i cada moviment del dit se suma girat amb l'angle d'aquell
+  moment: el dit quiet deixa el pes on és, i sense gir és el gest de sempre.
+  `proves/virada_mobil.js` ho prova amb el gest de debò (els escoltadors del joystick, que
+  ara `_entorn.js` guarda) a les tres vistes. Amb l'escota a mitges, la seqüència de
+  l'Oriol (primer de banda, després a popa) no vira ni posant el pes directament, de la v23
+  ençà: amollada, la vela no fa orsar prou.
 - **Rètol VELA estable (v27, `VELA.histeresi`, `RETOL_MS`).** El flameig (`aoa < 4°`) era un
   sí/no que treu deriva i frena, i això torna a obrir l'angle d'atac: als rumbs on queda a
   tocar dels 4° (8 kn a 45° caçat, 8 kn de través amb l'escota a mitges…) canviava a cada
@@ -222,6 +232,13 @@ l'angle de vela fins a 5° i hauria obligat a recalibrar-ho tot: vegeu `ESPEC-ap
   vaivé real del patí, que hi entra i en surt cada 1 a 1,5 s; el rètol aguanta cada estat
   1,2 s. La caixa fa l'amplada de SOBRECAÇADA (abans saltava fins a 34 px en canviar de
   text). Prova: `proves/rotol.mjs`.
+- **OBERTA MÀX. a l'empopada (v28, `F.topall`, `VELA.topall`).** Passat de l'òptim (`aoa > 35°`) el
+  rètol deia SOBRECAÇADA també amb l'escota amollada del tot, perquè la vela no s'obre més
+  de 80° (`SAIL_MAX`) i a partir d'uns 150° del vent l'angle d'atac ja hi passa. Ara, si la
+  vela és al topall (`maxSail` a menys de 2° dels 80°, amb el mateix marge de ±0,5°) diu
+  OBERTA MÀX. (el text l'ha triat l'Oriol), en verd: no es pot obrir més i no és culpa de l'escota. SOBRECAÇADA només surt
+  si amollant la vela s'obriria més (el topall arriba amb l'escota per sota de 0,033). Només
+  canvia el marcador: la física no fa servir ni `stall` ni `topall`. Prova: `proves/rotol.mjs`.
 - **Gest de virada a les dues amures.** `S.tackDir` recorda la banda de sortida fins que deixes anar el gest. Abans el signe era fix: des d'una amura la vela no passava mai amb l'escota caçada. Si es recorda poc, la vela torna enrere.
 - **La vela passa perquè s'ha creuat el vent.** Amb l'escota caçada (`S.sheet > 0,7`) la vela s'aguanta però no canvia de banda abans de creuar; si no, passava a 14° de vent, el patí no creuava, tornava enrere i bolcava amb el patró a sotavent. `creuat` demana que la proa s'allunyi del vent: l'estat és el mateix que el de la vela passada abans d'hora. Amollada es manté la vela a la contra, que és com surt de la fula i com gira aturat.
 - **El patró camina** (`ESC.pasLlarg`, del pal a popa uns 2,2 s; `ESC.pasLateral`, de banda a banda uns 2 s). Instantani, deixar barlovent alçava el buc abans que la proa orsés. A 12 kn ja no s'alça abans de creuar; a 18 kn encara sí (34°).

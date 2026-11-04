@@ -3,6 +3,8 @@
 // entre fotogrames. Fins a la v26, als rumbs on l'angle d'atac queda a tocar dels 4°
 // (FLAMEJA ↔ EN POTÈNCIA) canviava fins a 49 cops per segon i la caixa saltava 21 px:
 // el flameig treu deriva i frena, i això tornava a obrir l'angle a cada pas.
+// A l'empopada (v28), amb la vela al topall dels 80°, diu OBERTA MÀX.: SOBRECAÇADA només si
+// amollant l'escota la vela s'obriria més.
 import { chromium } from 'playwright';
 import path from 'path';
 const b = await chromium.launch({ executablePath: process.env.CHROME });
@@ -53,6 +55,59 @@ for(const [kn, twa, sh, vista] of CASOS){
   ok(r.perSeg <= 1, `${nom}: el rètol canvia ${r.perSeg} cops en un segon`);
   ok(r.salt <= 1, `${nom}: el rètol es mou ${r.salt.toFixed(1)} px d'un fotograma a l'altre`);
   resum.push(`${kn}/${twa}°/${sh} ${r.txt} ${r.canvis}`);
+}
+
+// EMPOPADA (v28): passat de l'òptim, el rètol només diu SOBRECAÇADA si amollant la vela
+// s'obriria més. Amb l'escota amollada del tot la vela és al topall dels 80°: OBERTA MÀX.
+// [vent, rumb, escota, rètol esperat]
+const POPA = [[5,165,0,'OBERTA MÀX.'], [10,150,0,'OBERTA MÀX.'], [15,180,0,'OBERTA MÀX.'], [10,165,0.3,'SOBRECAÇADA'],
+              [5,180,0.6,'SOBRECAÇADA'], [15,135,0.3,'SOBRECAÇADA'], [10,135,0,'EN POTÈNCIA'], [10,120,0.3,'EN POTÈNCIA']];
+const navega = (kn, twa, sh, frames) => pg.evaluate(async ([kn, twa, sh, frames]) => {
+  if(S.mode !== 'mar') entrarAlMar();
+  while(cam.mode !== 'popa') toggleCamMode();
+  S.windKn = kn; S.windFrom = 90*D2R; S.capsized = 0;
+  S.px = 0; S.py = shoreFn(0) - 300*(L/5.6); S.heading = (90 - twa)*D2R; S.speed = 0.6;
+  window.__sh = sh; window.__hd = S.heading;
+  for(let i=0;i<frames;i++){ S.sheet = sh; S.heading = window.__hd; await new Promise(q => requestAnimationFrame(q)); }
+  return { txt:document.getElementById('velaVal').textContent, topall:F.topall, max:F.maxSail*180/Math.PI, aoa:F.aoa*180/Math.PI };
+}, [kn, twa, sh, frames]);
+for(const [kn, twa, sh, esperat] of POPA){
+  const e = await navega(kn, twa, sh, 200);
+  const r = await mesura(2);
+  const nom = `${kn} kn a ${twa}° amb l'escota a ${sh}`;
+  ok(r.txt === esperat, `${nom}: el rètol diu ${r.txt} i hauria de dir ${esperat} (aoa ${e.aoa.toFixed(0)}°, vela oberta fins a ${e.max.toFixed(1)}°)`);
+  ok(r.perSeg <= 1 && r.salt <= 1, `${nom}: ${r.perSeg} canvis en un segon, ${r.salt.toFixed(1)} px`);
+}
+// amollant a poc a poc pel topall, i amb el dit tremolant just al llindar: sense tremolor
+{
+  await navega(10, 165, 0.3, 120);
+  const r = await pg.evaluate(async () => {
+    const v = document.getElementById('velaVal'), d = document.getElementById('diag');
+    const raf = () => new Promise(q => requestAnimationFrame(q));
+    // l'escota on la vela queda just al llindar del topall (78°)
+    let a = 0, c = 0.3; const lim = SAIL_MAX - VELA.topall;
+    for(let i=0;i<30;i++){ const m = (a + c)/2; S.sheet = m; (sailGeoLimit() > lim) ? (a = m) : (c = m); }
+    const llindar = (a + c)/2;
+    const fr = []; const t0 = performance.now();
+    while(performance.now() - t0 < 9000){
+      const t = (performance.now() - t0)/1000;
+      // 0-4 s: de 0,3 a amollada del tot; 4-9 s: al llindar, amb ±0,004 de tremolor del dit
+      S.sheet = t < 4 ? 0.3*(1 - t/4) : llindar + 0.004*Math.sin(t*31);
+      S.heading = window.__hd; await raf();
+      const rc = d.getBoundingClientRect();
+      fr.push({ t:performance.now(), txt:v.textContent, x:rc.left, w:rc.width });
+    }
+    let perSeg = 0, salt = 0; const txts = new Set(fr.map(f => f.txt));
+    for(let i=1;i<fr.length;i++) salt = Math.max(salt, Math.abs(fr[i].x - fr[i-1].x), Math.abs(fr[i].w - fr[i-1].w));
+    for(let i=0;i<fr.length;i++){ let k = 0; for(let j=i+1;j<fr.length && fr[j].t - fr[i].t < 1000;j++) if(fr[j].txt !== fr[j-1].txt) k++; perSeg = Math.max(perSeg, k); }
+    const finals = fr.filter(f => f.t - t0 > 5000).map(f => f.txt);
+    return { perSeg, salt, txts:[...txts], canvisFinal:finals.filter((x,i) => i && x !== finals[i-1]).length, llindar };
+  });
+  ok(r.txts.includes('SOBRECAÇADA') && r.txts.includes('OBERTA MÀX.'), `amollant pel topall el rètol no passa de SOBRECAÇADA a OBERTA MÀX. (${r.txts.join(', ')})`);
+  ok(r.perSeg <= 1, `amollant pel topall el rètol canvia ${r.perSeg} cops en un segon`);
+  ok(r.canvisFinal === 0, `amb l'escota al llindar del topall (${r.llindar.toFixed(3)}) i el dit tremolant, el rètol canvia ${r.canvisFinal} cops`);
+  ok(r.salt <= 1, `al voltant del topall la caixa es mou ${r.salt.toFixed(1)} px`);
+  resum.push(`topall a l'escota ${r.llindar.toFixed(3)}`);
 }
 // a la platja, aturat i amb la vela al vent
 await pg.reload({ waitUntil:'load' });
