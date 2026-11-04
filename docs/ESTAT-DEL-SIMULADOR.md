@@ -179,11 +179,11 @@ l'angle de vela fins a 5° i hauria obligat a recalibrar-ho tot: vegeu `ESPEC-ap
   servir les tres vistes: a les zenitals cada punt del costat baixa segons el calat (abans
   eren còpies senceres desplaçades, que feien un mirall a popa i una pinta a les puntes), i
   la perspectiva fa servir el mateix contorn mostrejat (`CONTORN_BUC`). Només és dibuix.
-- **Zoom continu (v26, `ZOOM`, `posaZoom`).** Lliscant vertical a la columna esquerra, sota el
-  control del pal (si el pal desplegat no hi deixa lloc, se li posa al costat). Escala
+- **Zoom continu (v26, `ZOOM`, `posaZoom`).** Lliscant vertical (a la v26 a la columna
+  esquerra; des de la v27, plegat sota el botó 🔍, vegeu més avall). Escala
   logarítmica de `cam.z` = 0,015 (uns 600 m de camp al mòbil) a 2 (el patí omple la
-  pantalla); el botó 🔍, + i − (×1,5), la Z i la roda hi passen tots per `posaZoom`, que
-  mou el lliscant. En perspectiva, entre el 40 % i el 100 % la càmera és l'antiga; més lluny
+  pantalla); + i − (×1,5), la Z, la roda i el pessic hi passen tots per `posaZoom`, que
+  mou el lliscant i el text del botó. En perspectiva, entre el 40 % i el 100 % la càmera és l'antiga; més lluny
   recula i s'enlaira fins a 30° de picat (877 m enrere i 509 m amunt al mínim), i a prop
   queda a 6,6 m. Als extrems: les pinzellades de vent s'esvaeixen per sota del 20 % (amb la
   retícula fixa eren 50.000 traços i 42 ms per fotograma), les barres de sorra i les onades
@@ -195,6 +195,33 @@ l'angle de vela fins a 5° i hauria obligat a recalibrar-ho tot: vegeu `ESPEC-ap
   damunt d'un control el captura aquell control. Si el primer dit ja havia mogut el pes o
   el patí a la platja, en arribar el segon es desfà. `gesturestart` s'anul·la perquè Safari
   no ampliï la pàgina dins l'iframe.
+  **Plegat (v27, `obreZoom`, `plegaZoom`, `ZOOM_PLEC`).** De sortida el lliscant no es veu:
+  el botó 🔍 (que ja no salta entre parades; les fa només la Z) el desplega a la seva
+  vertical, fins abans del primer control que trobi a sota (joystick, vela, escota, ENTRAR
+  AL MAR, mapa). Pot tapar un moment el rumb i la velocitat. Si a sota no hi cap, va a la
+  columna esquerra. Es plega 1,5 s després de deixar anar el lliscant o de tocar + o −, als
+  4 s si no s'ha tocat, i en tocar a fora (el toc fa igualment la seva feina). Mai es plega
+  amb el dit a sobre, i es col·loca només en obrir-se: no es mou sota el dit quan el text
+  del botó canvia d'amplada. El pessic, la roda i la Z van amb el lliscant plegat.
+- **Joystick amb la silueta del patí (v27, `joyPati`, `angJoy`).** El fons rodó és ara el
+  patí vist des de dalt (el mateix `CONTORN_BUC`, les bancades del `RIG`, el pal amb
+  l'estai i la barra), clar amb vora fosca per veure's sobre el mar i la sorra. Gira cada
+  fotograma, sense transició CSS (passant per ±180° faria una volta enrere), amb l'angle de
+  la proa a pantalla: a les zenitals `S.heading + cam.rot`; en perspectiva `cam.angP3`, que
+  render3D treu projectant la proa i la popa. El gest es llegeix en aquest marc (cap a la
+  proa dibuixada, pes a proa) amb la mateixa escala de 35 px i el mateix cercle: amb la
+  proa amunt (popa assentada, perspectiva) és idèntic a la v26. El pom seu on seu el
+  patró al dibuix (`CREW_X`, `crewY`), per tant sempre damunt les bancades; la zona que
+  respon al dit continua sent el cercle de sempre, que és el que escombra la silueta en
+  girar. Prova: `proves/joystick.mjs`.
+- **Rètol VELA estable (v27, `VELA.histeresi`, `RETOL_MS`).** El flameig (`aoa < 4°`) era un
+  sí/no que treu deriva i frena, i això torna a obrir l'angle d'atac: als rumbs on queda a
+  tocar dels 4° (8 kn a 45° caçat, 8 kn de través amb l'escota a mitges…) canviava a cada
+  pas, i el rètol, els catavents i la folga de l'escota amb ell (fins a 49 cops per segon; a
+  la v25 igual). Ara el flameig i la sobrecaçada tenen ±0,5° de marge, i el que queda és el
+  vaivé real del patí, que hi entra i en surt cada 1 a 1,5 s; el rètol aguanta cada estat
+  1,2 s. La caixa fa l'amplada de SOBRECAÇADA (abans saltava fins a 34 px en canviar de
+  text). Prova: `proves/rotol.mjs`.
 - **Gest de virada a les dues amures.** `S.tackDir` recorda la banda de sortida fins que deixes anar el gest. Abans el signe era fix: des d'una amura la vela no passava mai amb l'escota caçada. Si es recorda poc, la vela torna enrere.
 - **La vela passa perquè s'ha creuat el vent.** Amb l'escota caçada (`S.sheet > 0,7`) la vela s'aguanta però no canvia de banda abans de creuar; si no, passava a 14° de vent, el patí no creuava, tornava enrere i bolcava amb el patró a sotavent. `creuat` demana que la proa s'allunyi del vent: l'estat és el mateix que el de la vela passada abans d'hora. Amollada es manté la vela a la contra, que és com surt de la fula i com gira aturat.
 - **El patró camina** (`ESC.pasLlarg`, del pal a popa uns 2,2 s; `ESC.pasLateral`, de banda a banda uns 2 s). Instantani, deixar barlovent alçava el buc abans que la proa orsés. A 12 kn ja no s'alça abans de creuar; a 18 kn encara sí (34°).

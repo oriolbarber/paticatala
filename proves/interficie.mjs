@@ -76,7 +76,7 @@ const passos = [
       await pg.evaluate(()=>{ joyZen=false; S.wfT=0; });
     }],
   ['canviar de càmera (3 modes)',   async()=>{ for(let i=0;i<3;i++){ await pg.click('#btnCam'); await pg.waitForTimeout(350);} }],
-  ['cicle de zoom complet',         async()=>{ for(let i=0;i<4;i++){ await pg.click('#btnZoom'); await pg.waitForTimeout(250);} }],
+  ['obrir i plegar el zoom',        async()=>{ for(let i=0;i<4;i++){ await pg.click('#btnZoom'); await pg.waitForTimeout(250);} }],
   ['obrir i tancar el mapa',        async()=>{ await pg.click('#btnMapa'); await pg.waitForTimeout(400); await pg.click('#ovMapa'); }],
   ['menú de configuració',          async()=>{ await pg.click('#btnConfig'); await pg.waitForTimeout(250); }],
   ['moure vent, direcció i pes',    async()=>{ for(const [id,v] of [['sWind','22'],['sWindDir','180'],['sCrew','95']]){
