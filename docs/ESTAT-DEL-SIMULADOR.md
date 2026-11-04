@@ -179,6 +179,22 @@ l'angle de vela fins a 5° i hauria obligat a recalibrar-ho tot: vegeu `ESPEC-ap
   servir les tres vistes: a les zenitals cada punt del costat baixa segons el calat (abans
   eren còpies senceres desplaçades, que feien un mirall a popa i una pinta a les puntes), i
   la perspectiva fa servir el mateix contorn mostrejat (`CONTORN_BUC`). Només és dibuix.
+- **Zoom continu (v26, `ZOOM`, `posaZoom`).** Lliscant vertical a la columna esquerra, sota el
+  control del pal (si el pal desplegat no hi deixa lloc, se li posa al costat). Escala
+  logarítmica de `cam.z` = 0,015 (uns 600 m de camp al mòbil) a 2 (el patí omple la
+  pantalla); el botó 🔍, + i − (×1,5), la Z i la roda hi passen tots per `posaZoom`, que
+  mou el lliscant. En perspectiva, entre el 40 % i el 100 % la càmera és l'antiga; més lluny
+  recula i s'enlaira fins a 30° de picat (877 m enrere i 509 m amunt al mínim), i a prop
+  queda a 6,6 m. Als extrems: les pinzellades de vent s'esvaeixen per sota del 20 % (amb la
+  retícula fixa eren 50.000 traços i 42 ms per fotograma), les barres de sorra i les onades
+  tenen més trams de lluny, una anella marca el patí quan fa menys de 30 px, i la cresta de
+  la vora (taula 0/0) ja no dona NaN. Prova: `proves/zoom.mjs`.
+  El **pessic** amb dos dits (al llenç, a les tres vistes) fa el mateix zoom: separar els
+  dits el doble, zoom ×2, al voltant del patí (la càmera el segueix; un centre entre els
+  dits se'n tornaria al patí tot sol). Només compten els dits que toquen el mar: un dit
+  damunt d'un control el captura aquell control. Si el primer dit ja havia mogut el pes o
+  el patí a la platja, en arribar el segon es desfà. `gesturestart` s'anul·la perquè Safari
+  no ampliï la pàgina dins l'iframe.
 - **Gest de virada a les dues amures.** `S.tackDir` recorda la banda de sortida fins que deixes anar el gest. Abans el signe era fix: des d'una amura la vela no passava mai amb l'escota caçada. Si es recorda poc, la vela torna enrere.
 - **La vela passa perquè s'ha creuat el vent.** Amb l'escota caçada (`S.sheet > 0,7`) la vela s'aguanta però no canvia de banda abans de creuar; si no, passava a 14° de vent, el patí no creuava, tornava enrere i bolcava amb el patró a sotavent. `creuat` demana que la proa s'allunyi del vent: l'estat és el mateix que el de la vela passada abans d'hora. Amollada es manté la vela a la contra, que és com surt de la fula i com gira aturat.
 - **El patró camina** (`ESC.pasLlarg`, del pal a popa uns 2,2 s; `ESC.pasLateral`, de banda a banda uns 2 s). Instantani, deixar barlovent alçava el buc abans que la proa orsés. A 12 kn ja no s'alça abans de creuar; a 18 kn encara sí (34°).
