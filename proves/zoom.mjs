@@ -324,7 +324,7 @@ for(const [w, h] of [[400, 682], [360, 682], [360, 582], [320, 510]]){
   const sh = await pg.evaluate(() => S.sheet);
   ok(!(await obert()), 'tocar l\'escota no ha plegat el zoom');
   ok(sh > 0.9, `tocar l'escota amb el zoom obert no ha mogut l'escota (${sh.toFixed(2)})`);
-  await tap(bz.x, bz.y); await tap(200, 300);
+  await tap(bz.x, bz.y); await tap(bz.x - 110, 300);   // mar lliure, lluny del lliscant (amb el 🏆 el 🔍 és més a l'esquerra)
   ok(!(await obert()), 'tocar el mar no ha plegat el zoom');
   ok(!errs.length, 'errors: ' + errs.join(' | '));
   await ctx.close();

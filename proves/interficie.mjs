@@ -82,11 +82,16 @@ const passos = [
   ['moure vent, direcció i pes',    async()=>{ for(const [id,v] of [['sWind','22'],['sWindDir','180'],['sCrew','95']]){
                                         await pg.fill('#'+id, v); await pg.dispatchEvent('#'+id,'input'); await pg.waitForTimeout(120);} }],
   ['obrir REPTES',                  async()=>{ await pg.click('#btnReptes'); await pg.waitForTimeout(300); }],
-  ['triar una regata (bastó)',      async()=>{ await pg.click('#llistaCurses .cursaItem:nth-child(2)'); await pg.waitForTimeout(500); }],
-  ['anar a la línia de sortida',    async()=>{ await pg.click('#btnALinia'); await pg.waitForTimeout(400); }],
-  ['triar un exercici de tècnica',  async()=>{ await pg.click('#btnConfig'); await pg.waitForTimeout(200);
-                                        await pg.click('#btnReptes'); await pg.waitForTimeout(250);
-                                        await pg.click('#llistaReptes .repteItem:nth-child(2)'); await pg.waitForTimeout(300); }],
+  // els reptes són un camí de nivells: triar-ne un obre la fitxa i NAVEGA ho carrega tot
+  ['triar una regata (bastó)',      async()=>{ await pg.click('#itinMapa .node[data-id="basto"]'); await pg.waitForTimeout(250);
+                                        await pg.click('#btnNavega'); await pg.waitForTimeout(500); }],
+  ['anar a la línia de sortida',    async()=>{ await pg.click('#repteBar'); await pg.waitForTimeout(300);
+                                        await pg.click('#btnALinia'); await pg.waitForTimeout(400); }],
+  ['triar un exercici de tècnica',  async()=>{ await pg.click('#btnItin'); await pg.waitForTimeout(250);
+                                        await pg.click('#itinMapa .node[data-id="cenyida"]'); await pg.waitForTimeout(250);
+                                        await pg.click('#btnNavega'); await pg.waitForTimeout(300); }],
+  ['navegació lliure des dels reptes', async()=>{ await pg.click('#btnItin'); await pg.waitForTimeout(250);
+                                        await pg.click('#btnLliure'); await pg.waitForTimeout(300); }],
   ['teclat: pes, escota i pal',     async()=>{ for(const k of ['w','s','a','d','ArrowLeft','ArrowRight','q','e','r','f','x',' ','z','c','m','m']){
                                         await pg.keyboard.press(k); await pg.waitForTimeout(90);} }],
   ['control del pal (desplegar)',   async()=>{ await pg.click('#rakeToggle'); await pg.waitForTimeout(250); }],
