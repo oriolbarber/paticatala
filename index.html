@@ -343,10 +343,13 @@
 
   /* Mòbil estret (320 px): la fila de botons de dalt arribava a x=81 i la rosa
      dels vents acaba a x=89, o sigui que es trepitjaven. Ve de lluny, no del
-     botó de tornada. Escurçant càmera i zoom la fila comença a x=107. */
+     botó de tornada. Escurçant càmera i zoom la fila comença a x=107.
+     Amb el 🏆 dels reptes tornava a començar a x=74: amb botons de 34 px, càmera i
+     zoom de 44 i 4 px entre botons comença a x=96 (a 360 px, a x=136). */
   @media (max-width:360px){
-    #btnZoom, #btnCam{min-width:50px;padding:8px 6px;font-size:13px}
-    #btnConfig, #btnRestart{width:34px;height:34px}
+    #botons{gap:4px}
+    #btnZoom, #btnCam{min-width:44px;padding:8px 4px;font-size:13px}
+    #btnConfig, #btnRestart, #btnItin{width:34px;height:34px}
   }
 
   @media (max-width:480px){
@@ -684,7 +687,7 @@
     <div class="sub">Un patró més pesat adreça abans el patí i el fa girar amb menys esforç.</div>
   </div>
   <button class="btn sec" id="btnTancarConfig">TANCAR</button>
-  <div id="versio">Versió v29</div>
+  <div id="versio">Versió v30</div>
 </div></div>
 
 <script>

@@ -25,7 +25,7 @@ for(const [w, h] of [[400, 740], [360, 740]]){
              rosa:{l:p.cx-p.r-9, r:p.cx+p.r+9, t:p.cy-p.r-9, b:p.cy+p.r+9} };
   });
   const solapa = !(fila.f.r < fila.rosa.l || fila.f.l > fila.rosa.r || fila.f.b < fila.rosa.t || fila.f.t > fila.rosa.b);
-  ok(fila.r.w >= 38 && fila.r.l >= 0, `botó 🏆 visible a la fila de dalt (${Math.round(fila.r.w)} px)`);
+  ok(fila.r.w >= 34 && fila.r.l >= 0, `botó 🏆 visible a la fila de dalt, com a mínim 34 px com ⚙️ (${Math.round(fila.r.w)} px)`);
   ok(!solapa, 'la fila de botons no trepitja la rosa dels vents');
   await pg.screenshot({ path:`z_reptes_${w}_0_hud.png` });
 
