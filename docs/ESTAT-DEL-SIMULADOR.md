@@ -239,6 +239,34 @@ l'angle de vela fins a 5° i hauria obligat a recalibrar-ho tot: vegeu `ESPEC-ap
   OBERTA MÀX. (el text l'ha triat l'Oriol), en verd: no es pot obrir més i no és culpa de l'escota. SOBRECAÇADA només surt
   si amollant la vela s'obriria més (el topall arriba amb l'escota per sota de 0,033). Només
   canvia el marcador: la física no fa servir ni `stall` ni `topall`. Prova: `proves/rotol.mjs`.
+- **Penell acabada de virar (v29, `cara` al penell).** Auditoria de la virada de l'Oriol
+  (pes a proa i barlovent, pas per l'eix, nova banda i pes a popa): si el patró anava a popa
+  4° o 8° després del vent, com qui espera que el vent entri per la nova banda, el patí es
+  quedava aturat just passat el vent i el penell (escota caçada, `penell*(-tack)`) l'empenyia
+  a través del vent; ja a l'altra banda, amb la vela a la contra, el continuava fent caure
+  per l'amura vella i la vela tornava (a 10-12 kn amb 4°, i des de 8 kn amb 8°; de vegades
+  acabava bolcat amb el patró a sotavent). Ara, durant `postVir` i si el penell porta la proa
+  al vent, la porta cap al vent per la banda on és (`clamp(t/3°)`): queda proa al vent fins que
+  el pes a popa la fa caure a la nova amura. Abans de passar la vela, amollada i lluny del
+  vent és igual que abans: totes les xifres de `fisica.js` són les de la v28. Prova:
+  `proves/maniobres.js` (192 comprovacions de virada, gest real, zenitals nord i popa; la v28 en falla 40).
+  Amb aquesta seqüència i governant després a 48°, el patí torna a cenyir amb el 80% de la
+  velocitat entre 21 i 27 s després de començar a orsar (el GPS de l'Oriol: 20-40 s).
+- **Trasluixada: el patró empeny la vela cap a l'altra banda (v29).** A la trabutjada el gest
+  empenyia la politja cap a `-sign(S.pulley)`: en passar el centre el signe es girava i el
+  patró la tornava enrere; la politja quedava clavada al mig 3-5 s i la vela creuava de cop
+  44-48° per sobre de la popa redona. Ara `-S.sailSide`: creua 12-17° per sobre de la popa
+  redona. Xifra nova de `fisica.js`: «trasluixada completada» 1,8 s (abans 7,4 s, que eren
+  l'encallament). Compte: si el patró es queda 4 s més amb el pes a popa després del canvi,
+  el patí continua arribant i torna a trabutjar.
+- **Aturat proa al vent amb la vela a la contra (v29).** El rescat de la fula (`fall`) feia
+  caure la proa cap a `sign(t)` (on ja era), encara que el comentari deia «cap a la banda on
+  penja la vela»: amb la vela a la contra, això era l'amura vella i la vela tornava. Ara
+  `tack*fall`: amb el consell de l'Oriol (escota a mitges, pes a popa a la nova banda) surt per
+  l'amura nova en 8-12 s. Xifra nova de `fisica.js`: gir aturat amb el pes a popa 16,3°/s
+  (abans 11,0; límit de la prova pujat de 13 a 20). A la v28 el mateix patí ja girava a
+  16-20°/s a l'altra amura o amb l'escota més amollada. Proves noves a `proves/maniobres.js`
+  (aturat i trasluixada, 32 comprovacions; la v28 en falla 16).
 - **Gest de virada a les dues amures.** `S.tackDir` recorda la banda de sortida fins que deixes anar el gest. Abans el signe era fix: des d'una amura la vela no passava mai amb l'escota caçada. Si es recorda poc, la vela torna enrere.
 - **La vela passa perquè s'ha creuat el vent.** Amb l'escota caçada (`S.sheet > 0,7`) la vela s'aguanta però no canvia de banda abans de creuar; si no, passava a 14° de vent, el patí no creuava, tornava enrere i bolcava amb el patró a sotavent. `creuat` demana que la proa s'allunyi del vent: l'estat és el mateix que el de la vela passada abans d'hora. Amollada es manté la vela a la contra, que és com surt de la fula i com gira aturat.
 - **El patró camina** (`ESC.pasLlarg`, del pal a popa uns 2,2 s; `ESC.pasLateral`, de banda a banda uns 2 s). Instantani, deixar barlovent alçava el buc abans que la proa orsés. A 12 kn ja no s'alça abans de creuar; a 18 kn encara sí (34°).

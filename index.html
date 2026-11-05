@@ -684,7 +684,7 @@
     <div class="sub">Un patró més pesat adreça abans el patí i el fa girar amb menys esforç.</div>
   </div>
   <button class="btn sec" id="btnTancarConfig">TANCAR</button>
-  <div id="versio">Versió v28</div>
+  <div id="versio">Versió v29</div>
 </div></div>
 
 <script>
@@ -1514,7 +1514,9 @@ function physics(dt){
     } else if(nearRun && S.wx*S.sailSide > 0.28 && (S.jibeCd||0) <= 0){
       // trabutjada: cal un gest CLAR de pes a sotavent, i amb temps refractari
       // perquè la vela no vagi canviant de banda a cada oscil·lació
-      crew = -Math.sign(S.pulley || 1) * clamp(S.wx*S.sailSide, 0, 1) * 2.2;
+      // (v29) cap a l'altra banda de la vela (sailSide), no segons el signe de la politja:
+      // passat el centre el signe es girava i el patró la tornava enrere (creuava 45° tard)
+      crew = -S.sailSide * clamp(S.wx*S.sailSide, 0, 1) * 2.2;
       F.tackTo = 0;
     } else F.tackTo = 0;
     if(S.jibeCd > 0) S.jibeCd -= dt;
@@ -1691,7 +1693,15 @@ function physics(dt){
     if(parat > 0.02){
       const penell = windN * parat * ((flap || S.postVir > 0) ? 0.30 : 1) *
                      ((S.sheet - 0.42)*1.35 + wfEff*0.42);
-      torque += penell * (-tack);
+      // ACABADA DE VIRAR (postVir), el penell porta la proa CAP AL VENT, no cap a la banda
+      // de la vela (v29). Amb -tack, aturat a 2-5° de la nova amura amb la vela ja passada,
+      // empenyia la proa a través del vent i, a l'altra banda, la continuava fent caure per
+      // l'amura VELLA: la vela tornava (l'Oriol, si anava a popa uns graus massa tard). Ara
+      // la deixa proa al vent; el pes a popa la fa caure a la nova. Abans de passar la vela,
+      // i lluny del vent, és el mateix que abans (les virades calibrades no canvien).
+      // (Només quan el penell porta la proa al vent; amollada, la proa cau cap a la vela.)
+      const cara = (S.postVir > 0 && penell > 0 && absT < 90*D2R) ? clamp(t/(3*D2R), -1, 1) : tack;
+      torque += penell * (-cara);
       F.penell = penell;
     } else F.penell = 0;
   }
@@ -1770,9 +1780,9 @@ function physics(dt){
     const clavat = senseForca ? 1 : (1 - clamp(absT/(32*D2R), 0, 1));
     // acabada de virar, la vela nova flameja a sotavent i el vent de proa la fa caure
     const fall  = windN * still * clavat * (S.postVir > 0 ? 1 : 0.45 + 0.55*(1 - S.sheet)) * 0.85;
-    // cau cap al costat on ja és la proa; si és exactament al vent, cap on va la vela
-    const side0 = Math.abs(t) > 1*D2R ? Math.sign(t) : tack;
-    torque += side0 * fall;
+    // (v29) cau cap a la banda on penja la vela: amb la vela a la contra, per l'amura
+    // nova (abans sign(t) la feia caure sempre per l'amura vella i la vela tornava)
+    torque += tack * fall;
   }
 
   F.torque = orsaF*spdF;

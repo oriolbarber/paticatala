@@ -71,7 +71,7 @@ console.log('FÍSICA (ha de donar el mateix que abans dels canvis de dibuix)\n')
     girTot += Math.abs(A.normA(S.heading-hPrev)); hPrev=S.heading;
   }
   console.log(`  aturat amb el pes a popa: ${sost.toFixed(1)}°/s sostinguts · ${(girTot/(2*Math.PI)).toFixed(2)} voltes en 12 s`);
-  cal(sost<13 && girTot/(2*Math.PI)<0.75, 'aturat no roda sobre si mateix');
+  cal(sost<20 && girTot/(2*Math.PI)<0.75, 'aturat no roda sobre si mateix');
 }
 // 5) navegant, el gir segueix sent viu. Amb la vela portant: des del vent aparent
 //    (v22), a 60° i 6 kn l'escota a 0,7 deixa la vela flamejant, i flamejant no governa.
